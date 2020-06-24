@@ -14,10 +14,13 @@ source=("$pkgname-$pkgver.dmg::https://developer.apple.com/design/downloads/SF-F
 noextract=("$pkgname-$pkgver.dmg")
 
 prepare() {
+	mkdir -p "$pkgname-$pkgver"
 	7z e -y -so "$pkgname-$pkgver.dmg" '-i!*/*.pkg' > $pkgname.pkg
 	bsdtar -xOf $pkgname.pkg 'Resources/English.lproj/license.rtf' | xz > "$pkgname-$pkgver/LICENSE.rtf.xz"
 	bsdtar -xOf $pkgname.pkg 'SanFranciscoPro.pkg/Payload' > $pkgname.cpio
 	bsdtar -C . -s ',.*/,,g' -xzf $pkgname.cpio \*.otf
+
+	mv *.otf $pkgname-$pkgver
 		
 	mkdir -p "$pkgname-$pkgver"
 	7z e -y -r "-o$pkgname-$pkgver" '-i!*.otf' "$pkgname.cpio"
