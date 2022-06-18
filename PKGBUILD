@@ -8,16 +8,16 @@ url=https://developer.apple.com/fonts/
 arch=('any')
 license=('custom')
 makedepends=('p7zip')
-sha256sums=('90ba507413019df033a7bb31fa569e723018d53851ef0ce19c896c790d89fdfc')
+sha256sums=('SKIP')
 
-source=("$pkgname-$pkgver.dmg::https://developer.apple.com/design/downloads/SF-Font-Pro.dmg")
+source=("$pkgname-$pkgver.dmg::https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg")
 noextract=("$pkgname-$pkgver.dmg")
 
 prepare() {
 	mkdir -p "$pkgname-$pkgver"
 	7z e -y -so "$pkgname-$pkgver.dmg" '-i!*/*.pkg' > $pkgname.pkg
-	bsdtar -xOf $pkgname.pkg 'Resources/English.lproj/license.rtf' | xz > "$pkgname-$pkgver/LICENSE.rtf.xz"
-	bsdtar -xOf $pkgname.pkg 'SanFranciscoPro.pkg/Payload' > $pkgname.cpio
+	bsdtar -xOf $pkgname.pkg 'Resources/English.lproj/License.rtf' | xz > "$pkgname-$pkgver/LICENSE.rtf.xz"
+	bsdtar -xOf $pkgname.pkg 'SFProFonts.pkg/Payload' > $pkgname.cpio
 	bsdtar -C . -s ',.*/,,g' -xzf $pkgname.cpio \*.otf
 
 	mv *.otf $pkgname-$pkgver
